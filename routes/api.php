@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\V1\ConversationsController;
+use App\Http\Controllers\Api\V1\MessagesController;
+use App\Http\Controllers\Api\V1\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +19,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function (){
+   Route::apiResource('users', UsersController::class);
+   Route::apiResource('messages', MessagesController::class);
+   Route::apiResource('conversations', ConversationsController::class);
 });
