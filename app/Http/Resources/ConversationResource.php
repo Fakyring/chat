@@ -15,11 +15,11 @@ class ConversationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id_convers,
-            'login' => $this->id_creator,
-            'name' => $this->name,
-            'private' => $this->private,
-            'description' => $this->description
+            'Conversation' => $this->id_convers,
+            'Creator' => $this->id_creator,
+            'Name' => $this->name,
+            'Private' => $this->private == 0 ? false : true,
+            'Description' => $this->description
         ];
     }
 }

@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use function MongoDB\BSON\toJSON;
 
-class UsersController extends Controller {
+class UsersController extends Controller
+{
     public function index() {
         return UserResource::collection(Users::all());
     }
@@ -32,7 +33,7 @@ class UsersController extends Controller {
         return $usr;
     }
 
-    public function update(UpdateUserRequest $request, Users $user) {
+    public function update(UserRequest $request, Users $user) {
         $user->update($request->validated());
         return UserResource::make($user);
     }

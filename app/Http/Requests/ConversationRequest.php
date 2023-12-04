@@ -21,19 +21,19 @@ class ConversationRequest extends FormRequest
      */
     public function rules(): array
     {
-        if (request()->method('post')) {
+        if (request()->isMethod('post')) {
             return [
-                'id_creator' => 'nullable|int',
+                'id_creator' => 'exists:users,id_user|int',
                 'name' => 'required|string|max:50',
                 'private' => 'nullable|boolean',
                 'description' => 'nullable|string|max:255'
             ];
         } else {
             return [
-                'id_creator' => 'nullable|int',
+                'id_creator' => 'exists:users,id_user|int',
                 'name' => 'string|max:50',
-                'private' => 'nullable|boolean',
-                'description' => 'nullable|string|max:255'
+                'private' => 'boolean',
+                'description' => 'string|max:255'
             ];
         }
     }

@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Schema\ForeignKeyDefinition;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -26,5 +28,13 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, \Exception|Throwable $e)
+    {
+        if ($e instanceof ModelNotFoundException) {
+            return response()->json(['error' => 'Data not found.']);
+        }
+        return parent::render($request, $e);
     }
 }

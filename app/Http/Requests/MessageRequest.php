@@ -11,7 +11,7 @@ class MessageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,20 @@ class MessageRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        if (request()->isMethod('post')) {
+            return [
+                'id_user' => 'exists:users,id_user|required|int',
+                'id_convers' => 'exists:convers,id_convers|required|int',
+                'text' => 'required|string|max:10000',
+                'deleted' => 'nullable|boolean'
+            ];
+        } else {
+            return [
+                'id_user' => 'int',
+                'id_convers' => 'int',
+                'text' => 'string|max:10000',
+                'deleted' => 'nullable|boolean'
+            ];
+        }
     }
 }
