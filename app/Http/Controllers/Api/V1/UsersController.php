@@ -11,8 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use function MongoDB\BSON\toJSON;
 
-class UsersController extends Controller
-{
+class UsersController extends Controller {
     public function index() {
         return UserResource::collection(Users::all());
     }
@@ -34,11 +33,15 @@ class UsersController extends Controller
     }
 
     public function update(UserRequest $request, Users $user) {
+        if (!auth()->user() || auth()->user()->id_user !== $user->id_user)
+            return response()->json(["data" => "These are not your's credentials."], 403);
         $user->update($request->validated());
         return UserResource::make($user);
     }
 
     public function destroy(Users $user) {
+        if (!auth()->user() || auth()->user()->id_user !== $user->id_user)
+            return response()->json(["data" => "These are not your's credentials."], 403);
         $user->delete();
         return response()->noContent();
     }

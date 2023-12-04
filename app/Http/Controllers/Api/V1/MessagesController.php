@@ -13,7 +13,7 @@ class MessagesController extends Controller {
         if ($messages->count() > 0)
             return $messages;
         else
-            return response()->json(['data' => "No messages"], 404);
+            return response()->json(['data' => "No messages."], 404);
     }
 
     public function store(MessageRequest $request) {
@@ -22,21 +22,31 @@ class MessagesController extends Controller {
     }
 
     public function show(string $id) {
-        $messages = Messages::where("id_user", $id)->where("deleted", 0)->get();
-        if (!$messages) {
-            return response()->json(['data' => "No such message"], 404);
-        }
-        return $messages;
+        $message = Messages::where("id_user", $id)->where("deleted", 0)->get();
+        if (!$message)
+            return response()->json(['data' => "No such message."], 404);
+        return $message;
     }
 
     public function update(MessageRequest $request, string $id) {
         $message = Messages::where("id_message", $id)->first();
+        if (!$message)
+            return response()->json(['data' => "No such message."], 404);
+        if (!auth()->user() || auth()->user()->id_user !== $message->id_user)
+            return response()->json(["data" => "You didn't write this message."], 403);
         $message->update($request->validated());
         return MessageResource::make($message);
     }
 
     public function destroy(string $id) {
         $message = Messages::where("id_message", $id)->first();
+        if (!$message)
+            return response()->json(['data' => "No such message."], 404);
+        if (!auth()->user() || auth()->user()->id_user !== $message->id_user) {
+            return response()->json(["data" => "You didn't write this message."], 403);
+        }
+        if ($message->deleted == 1)
+            return response()->json(["data" => "Message is already deleted."]);
         $message->deleted = 1;
         $message->update();
         return $message;

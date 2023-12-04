@@ -26,7 +26,6 @@ class UserRequest extends FormRequest {
             ];
         } else {
             return [
-                'login' => 'string|max:30|min:8',
                 'password' => 'string|max:20|min:8',
                 'name' => 'string|max:30|min:6'
             ];
