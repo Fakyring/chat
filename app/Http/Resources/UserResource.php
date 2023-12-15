@@ -17,7 +17,8 @@ class UserResource extends JsonResource
         return [
             'ID' => $this->id_user,
             'Login' => $this->login,
-            'Name' => $this->name
+            'Name' => $this->name,
+            'Role' => $this->role == 0 ? "User" : "Admin"
         ];
     }
 }

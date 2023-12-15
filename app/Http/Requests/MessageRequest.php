@@ -23,14 +23,14 @@ class MessageRequest extends FormRequest
     {
         if (request()->isMethod('post')) {
             return [
-                'id_user' => 'exists:users,id_user|required|int',
+                'id_user' => 'nullable|exists:users,id_user|int',
                 'id_convers' => 'exists:convers,id_convers|required|int',
                 'text' => 'required|string|max:10000',
                 'deleted' => 'nullable|boolean'
             ];
         } else {
             return [
-                'id_user' => 'int',
+                'id_user' => 'nullable|int',
                 'id_convers' => 'int',
                 'text' => 'string|max:10000',
                 'deleted' => 'nullable|boolean'

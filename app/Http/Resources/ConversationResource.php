@@ -18,7 +18,6 @@ class ConversationResource extends JsonResource
             'Conversation' => $this->id_convers,
             'Creator' => $this->id_creator,
             'Name' => $this->name,
-            'Private' => $this->private == 0 ? false : true,
             'Description' => $this->description
         ];
     }

@@ -22,12 +22,14 @@ class UserRequest extends FormRequest {
             return [
                 'login' => 'required|string|max:30|min:8',
                 'password' => 'required|string|max:20|min:8',
-                'name' => 'required|string|max:30|min:6'
+                'name' => 'required|string|max:30|min:6',
+                'role' => 'nullable|boolean'
             ];
         } else {
             return [
                 'password' => 'string|max:20|min:8',
-                'name' => 'string|max:30|min:6'
+                'name' => 'string|max:30|min:6',
+                'role' => 'nullable|boolean'
             ];
         }
     }

@@ -23,16 +23,14 @@ class ConversationRequest extends FormRequest
     {
         if (request()->isMethod('post')) {
             return [
-                'id_creator' => 'exists:users,id_user|int',
+                'id_creator' => 'nullable|exists:users,id_user|int',
                 'name' => 'required|string|max:50',
-                'private' => 'nullable|boolean',
                 'description' => 'nullable|string|max:255'
             ];
         } else {
             return [
-                'id_creator' => 'exists:users,id_user|int',
+                'id_creator' => 'nullable|exists:users,id_user|int',
                 'name' => 'string|max:50',
-                'private' => 'boolean',
                 'description' => 'string|max:255'
             ];
         }

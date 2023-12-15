@@ -13,20 +13,23 @@ use function MongoDB\BSON\toJSON;
 
 class UsersController extends Controller {
     public function index() {
-        return UserResource::collection(Users::all());
+        if (auth()->user()->role === 1)
+            return UserResource::collection(Users::all());
+        else
+            return response()->json(["data" => "У вас недостаточно прав"], 403);
     }
 
     public function show($id) {
         $user = Users::where("id_user", $id)->first();
         if (!$user) {
-            return response()->json(['data' => "No such user"], 404);
+            return response()->json(['data' => "Такого пользователя нет"], 404);
         }
         return UserResource::make($user);
     }
 
     public function store(UserRequest $user) {
         if (Users::where('login', $user['login'])->first()) {
-            return response()->json(['data' => "User already exists"], 409);
+            return response()->json(['data' => "Пользователь уже существует"], 409);
         }
         $usr = Users::create($user->validated());
         return $usr;
@@ -34,14 +37,14 @@ class UsersController extends Controller {
 
     public function update(UserRequest $request, Users $user) {
         if (!auth()->user() || auth()->user()->id_user !== $user->id_user)
-            return response()->json(["data" => "These are not your's credentials."], 403);
+            return response()->json(["data" => "У вас недостаточно прав"], 403);
         $user->update($request->validated());
         return UserResource::make($user);
     }
 
     public function destroy(Users $user) {
-        if (!auth()->user() || auth()->user()->id_user !== $user->id_user)
-            return response()->json(["data" => "These are not your's credentials."], 403);
+        if (!auth()->user() || (auth()->user()->id_user !== $user->id_user && auth()->user()->role != 1))
+            return response()->json(["data" => "У вас недостаточно прав"], 403);
         $user->delete();
         return response()->noContent();
     }
