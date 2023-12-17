@@ -12,8 +12,8 @@ class UserConversController extends Controller {
     public function store(UserConversRequest $request) {
         $userConver = UserConvers::where("id_user", auth()->id())->where("id_conver", $request->id_conver)->first();
         if (auth()->user()->role === 1 || $userConver) {
-            UserConvers::create($request->validated());
-            return UserConversResource::make($request);
+            $newUserConver = UserConvers::create($request->validated());
+            return UserConversResource::make($newUserConver);
         } else {
             return response()->json(['data' => "Нет прав"], 404);
         }
@@ -37,6 +37,6 @@ class UserConversController extends Controller {
             $userConver->delete();
             return response()->json(['data' => "Приглашение удалено"]);
         }
-        return response()->json(['data' => "Нет такого пользователя в беседе"], 404);
+        return response()->json(['data' => "Нет такого пользователя в беседе или нет прав"], 404);
     }
 }
