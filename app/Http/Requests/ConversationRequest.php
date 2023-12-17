@@ -25,13 +25,15 @@ class ConversationRequest extends FormRequest
             return [
                 'id_creator' => 'nullable|exists:users,id_user|int',
                 'name' => 'required|string|max:50',
-                'description' => 'nullable|string|max:255'
+                'description' => 'nullable|string|max:255',
+                'private' => 'nullable|int'
             ];
         } else {
             return [
                 'id_creator' => 'nullable|exists:users,id_user|int',
                 'name' => 'string|max:50',
-                'description' => 'string|max:255'
+                'description' => 'string|max:255',
+                'private' => 'nullable|int'
             ];
         }
     }

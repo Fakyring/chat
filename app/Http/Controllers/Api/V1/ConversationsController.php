@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ConversationRequest;
 use App\Http\Resources\ConversationResource;
 use App\Models\Conversations;
+use App\Models\UserConvers;
 
 class ConversationsController extends Controller {
     public function index() {
@@ -18,6 +19,7 @@ class ConversationsController extends Controller {
 
     public function store(ConversationRequest $convers) {
         $conv = Conversations::create($convers->validated() + ["id_creator"=>auth()->id()]);
+        UserConvers::create(["id_user"=>$conv->id_creator, "id_conver"=>$conv->id_convers]);
         return $convers;
     }
 

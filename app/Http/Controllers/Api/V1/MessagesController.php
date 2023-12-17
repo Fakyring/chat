@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MessageRequest;
 use App\Http\Resources\MessageResource;
+use App\Models\Conversations;
 use App\Models\Messages;
+use App\Models\UserConvers;
 
 class MessagesController extends Controller {
     public function index() {
@@ -20,7 +22,12 @@ class MessagesController extends Controller {
     }
 
     public function store(MessageRequest $request) {
-        $message = Messages::create($request->validated() + ["id_user"=>auth()->id()]);
+        $userConver = UserConvers::where("id_user", auth()->id())->where("id_conver", $request->id_convers);
+        $conver = Conversations::where("id_convers", $request->id_convers)->first();
+        if (auth()->user() && (auth()->user()->role === 1 || $userConver->count() != 0 || $conver->private === 0))
+            $message = Messages::create($request->validated() + ["id_user" => auth()->id()]);
+        else
+            return response()->json(['data' => "Нет прав"], 404);
         return $message;
     }
 

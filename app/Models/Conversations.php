@@ -12,6 +12,7 @@ class Conversations extends Model {
         'id_convers',
         'id_creator',
         'name',
-        'description'
+        'description',
+        'private'
     ];
 }

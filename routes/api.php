@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\ConversationsController;
 use App\Http\Controllers\Api\V1\MessagesController;
 use App\Http\Controllers\Api\V1\UsersController;
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\Api\V1\UserConversController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
     Route::apiResource('users', UsersController::class);
     Route::apiResource('messages', MessagesController::class);
     Route::apiResource('conversations', ConversationsController::class);
+    Route::apiResource('userconvers', UserConversController::class);
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
